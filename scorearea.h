@@ -8,6 +8,24 @@
 #include <QMatrix>
 #include "note.h"
 
+class StaffPaths
+{
+    QPainterPath trebleClefPath,
+        bassClefPath,
+        quarterNotePath,
+        ledgerLinePath,
+        sharpPath, naturalPath, flatPath;
+
+public:
+    const QPainterPath& trebleClef();
+    const QPainterPath& bassClef();
+    const QPainterPath& quarterNote();
+    const QPainterPath& ledgerLine();
+    const QPainterPath& sharp();
+    const QPainterPath& natural();
+    const QPainterPath& flat();
+};
+
 class ScoreArea : public QWidget
 {
 public:
@@ -15,24 +33,15 @@ public:
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
 
-protected:
-    Note blackNote;
-
     enum {
         staffWeight = 2,
         staffSpacing = 10,
         staffGap = 3
     };
 
-    QPainterPath trebleClefPath,
-        bassClefPath,
-        quarterNotePath,
-        ledgerLinePath;
+protected:
+    Note blackNote;
 
-    const QPainterPath& trebleClef();
-    const QPainterPath& bassClef();
-    const QPainterPath& quarterNote();
-    const QPainterPath& ledgerLine();
 
     void paintEvent(QPaintEvent *event);
     void keyPressEvent(QKeyEvent *event);

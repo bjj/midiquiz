@@ -1,23 +1,7 @@
 #include "scorearea.h"
 #include <math.h>
 
-
-ScoreArea::ScoreArea()
-{
-    setBackgroundRole(QPalette::Base);
-    setAutoFillBackground(true);
-    setFocusPolicy(Qt::ClickFocus);
-}
-
-QSize ScoreArea::minimumSizeHint() const
-{
-    return QSize(100, 100);
-}
-
-QSize ScoreArea::sizeHint() const
-{
-    return QSize(400, 200);
-}
+static StaffPaths paths;
 
 // Create a QPainterPath representing a G Clef suitable for a staff
 // with lines separated by 10 units.  0, 0 falls horizontally at the
@@ -26,7 +10,7 @@ QSize ScoreArea::sizeHint() const
 // Converted from http://commons.wikimedia.org/wiki/File:Treble_clef.svg
 // by carefully scaling/moving in Inkscape, exporting to PostScript and
 // then replacing the 'eofill' with a 'pathforall' that outputs Qt
-const QPainterPath& ScoreArea::trebleClef()
+const QPainterPath& StaffPaths::trebleClef()
 {
     QPainterPath& path = trebleClefPath;
 
@@ -139,7 +123,7 @@ const QPainterPath& ScoreArea::trebleClef()
 // Converted from http://commons.wikimedia.org/wiki/File:Bass_clef.svg
 // by carefully scaling/moving in Inkscape, exporting to PostScript and
 // then replacing the 'eofill' with a 'pathforall' that outputs Qt
-const QPainterPath& ScoreArea::bassClef()
+const QPainterPath& StaffPaths::bassClef()
 {
     QPainterPath& path = bassClefPath;
 
@@ -204,8 +188,120 @@ const QPainterPath& ScoreArea::bassClef()
     return path;
 }
 
+const QPainterPath& StaffPaths::sharp()
+{
+    QPainterPath& path = sharpPath;
+
+    if (!path.isEmpty())
+        return path;
+
+    path.moveTo(-3.22, -12.44);
+path.lineTo(-3.22, -5.03);
+path.lineTo(-4.98, -4.21);
+path.lineTo(-4.98, -1.21);
+path.lineTo(-3.22, -2.03);
+path.lineTo(-3.22, 5.53);
+path.lineTo(-4.98, 6.35);
+path.lineTo(-4.98, 9.35);
+path.lineTo(-3.22, 8.53);
+path.lineTo(-3.22, 14.03);
+path.lineTo(-1.63, 13.29);
+path.lineTo(-1.63, 7.79);
+path.lineTo(1.77, 6.2);
+path.lineTo(1.77, 11.7);
+path.lineTo(3.4, 10.94);
+path.lineTo(3.4, 5.44);
+path.lineTo(5.09, 4.66);
+path.lineTo(5.09, 1.66);
+path.lineTo(3.4, 2.44);
+path.lineTo(3.4, -5.12);
+path.lineTo(5.09, -5.91);
+path.lineTo(5.09, -8.9);
+path.lineTo(3.4, -8.12);
+path.lineTo(3.4, -15.53);
+path.lineTo(1.77, -14.77);
+path.lineTo(1.77, -7.36);
+path.lineTo(-1.63, -5.77);
+path.lineTo(-1.63, -13.18);
+path.lineTo(-3.22, -12.44);
+path.closeSubpath();
+path.moveTo(-1.63, -2.78);
+path.lineTo(1.77, -4.36);
+path.lineTo(1.77, 3.2);
+path.lineTo(-1.63, 4.79);
+path.lineTo(-1.63, -2.78);
+path.closeSubpath();
+
+
+    return path;
+}
+
+const QPainterPath& StaffPaths::natural()
+{
+    QPainterPath& path = naturalPath;
+
+    if (!path.isEmpty())
+        return path;
+
+    path.moveTo(1.59, -8.49);
+    path.cubicTo(1.59, -8.49, -1.43, -6.86, -1.43, -6.86);
+    path.cubicTo(-1.43, -6.86, -1.43, -12.66, -1.43, -12.66);
+    path.cubicTo(-1.43, -12.66, -2.89, -12.66, -2.89, -12.66);
+    path.cubicTo(-2.89, -12.66, -2.89, -6.07, -2.89, -6.07);
+    path.cubicTo(-2.89, -6.07, -2.89, -2.15, -2.89, -2.15);
+    path.cubicTo(-2.89, -2.15, -2.89, 5.3, -2.89, 5.3);
+    path.cubicTo(-2.89, 5.3, -2.89, 9.03, -2.89, 9.03);
+    path.cubicTo(-2.89, 9.03, -1.43, 8.24, -1.43, 8.24);
+    path.cubicTo(-1.43, 8.24, 1.59, 6.6, 1.59, 6.6);
+    path.cubicTo(1.59, 6.6, 1.59, 12.53, 1.59, 12.53);
+    path.cubicTo(1.59, 12.53, 3.05, 12.53, 3.05, 12.53);
+    path.cubicTo(3.05, 12.53, 3.05, 5.81, 3.05, 5.81);
+    path.cubicTo(3.05, 5.81, 3.05, 2.09, 3.05, 2.09);
+    path.cubicTo(3.05, 2.09, 3.05, -5.37, 3.05, -5.37);
+    path.cubicTo(3.05, -5.37, 3.05, -9.28, 3.05, -9.28);
+    path.cubicTo(3.05, -9.28, 1.59, -8.49, 1.59, -8.49);
+    path.closeSubpath();
+    path.moveTo(1.59, -4.58);
+    path.cubicTo(1.59, -4.58, 1.59, 2.88, 1.59, 2.88);
+    path.cubicTo(1.59, 2.88, -1.43, 4.51, -1.43, 4.51);
+    path.cubicTo(-1.43, 4.51, -1.43, -2.94, -1.43, -2.94);
+    path.cubicTo(-1.43, -2.94, 1.59, -4.58, 1.59, -4.58);
+    path.closeSubpath();
+
+    return path;
+}
+
+const QPainterPath& StaffPaths::flat()
+{
+    QPainterPath& path = naturalPath;
+
+    if (!path.isEmpty())
+        return path;
+
+path.moveTo(-2.47, -17.63);
+path.lineTo(-2.26, 5.02);
+path.lineTo(-0.97, 5.12);
+path.cubicTo(-0.97, 5.12, 1.61, 3.8, 2.97, 2.23);
+path.cubicTo(3.64, 1.46, 4.29, 0.57, 4.63, -0.42);
+path.cubicTo(4.96, -1.41, 4.88, -3.2, 4.08, -4.25);
+path.cubicTo(3.27, -5.31, 1.46, -5.03, -0.47, -4.61);
+path.lineTo(-0.35, -17.63);
+path.lineTo(-2.47, -17.63);
+path.closeSubpath();
+path.moveTo(-0.5, -3.22);
+path.cubicTo(1.11, -3.49, 2.54, -3.48, 2.61, -2.05);
+path.cubicTo(2.68, -0.62, 0.21, 2.32, -0.67, 3.14);
+path.lineTo(-0.5, -3.22);
+path.closeSubpath();
+
+
+
+
+    return path;
+}
+
 // A quarter note suitable for a scale with lines spaced 10u apart
-const QPainterPath& ScoreArea::quarterNote()
+const QPainterPath& StaffPaths::quarterNote()
 {
     QPainterPath& path = quarterNotePath;
 
@@ -228,15 +324,32 @@ const QPainterPath& ScoreArea::quarterNote()
     return path;
 }
 
-const QPainterPath& ScoreArea::ledgerLine()
+const QPainterPath& StaffPaths::ledgerLine()
 {
     QPainterPath& path = ledgerLinePath;
 
     if (!path.isEmpty())
         return path;
 
-    path.addRect(-11, -staffWeight/2., 22, staffWeight);
+    path.addRect(-10, -ScoreArea::staffWeight/2., 20, ScoreArea::staffWeight);
     return path;
+}
+
+ScoreArea::ScoreArea()
+{
+    setBackgroundRole(QPalette::Base);
+    setAutoFillBackground(true);
+    setFocusPolicy(Qt::ClickFocus);
+}
+
+QSize ScoreArea::minimumSizeHint() const
+{
+    return QSize(100, 100);
+}
+
+QSize ScoreArea::sizeHint() const
+{
+    return QSize(400, 200);
 }
 
 static int sign(int i)
@@ -247,7 +360,8 @@ static int sign(int i)
 void ScoreArea::paintEvent(QPaintEvent * /* event */)
 {
     QPainter painter(this);
-    painter.setPen(QPen(Qt::black, staffWeight, Qt::SolidLine));
+    painter.setPen(QPen(QColor(64,64,64), staffWeight, Qt::SolidLine));
+    QBrush black(Qt::black, Qt::SolidPattern);
 
     bool antialiased = true;
     if (antialiased) {
@@ -267,14 +381,14 @@ void ScoreArea::paintEvent(QPaintEvent * /* event */)
 
     painter.save();
     painter.translate(38, -staffSpacing * (1 + staffGap));
-    const QPainterPath& tpath = trebleClef();
-    painter.fillPath(tpath, QBrush(Qt::black, Qt::SolidPattern));
+    const QPainterPath& tpath = paths.trebleClef();
+    painter.fillPath(tpath, black);
     painter.restore();
 
     painter.save();
     painter.translate(38, staffSpacing * (1 + staffGap));
-    const QPainterPath& bpath = bassClef();
-    painter.fillPath(bpath, QBrush(Qt::black, Qt::SolidPattern));
+    const QPainterPath& bpath = paths.bassClef();
+    painter.fillPath(bpath, black);
     painter.restore();
 
     const Note& note = blackNote;
@@ -288,10 +402,17 @@ void ScoreArea::paintEvent(QPaintEvent * /* event */)
 
         painter.save();
         painter.translate(100, 0);
+
         painter.save();
         painter.translate(0, y * staffSpacing);
-        const QPainterPath& npath = quarterNote();
-        painter.fillPath(npath, QBrush(Qt::black, Qt::SolidPattern));
+
+        painter.save();
+        painter.translate(-14, 0);
+        painter.fillPath(paths.sharp(), black);
+        painter.restore();
+
+        const QPainterPath& npath = paths.quarterNote();
+        painter.fillPath(npath, black);
         painter.restore();
 
         int ledger, target, step;
@@ -316,8 +437,8 @@ void ScoreArea::paintEvent(QPaintEvent * /* event */)
         }
         painter.translate(0, ledger * staffSpacing);
         while (sign(target - ledger) == step) {
-            const QPainterPath& lpath = ledgerLine();
-            painter.fillPath(lpath, QBrush(Qt::black, Qt::SolidPattern));
+            const QPainterPath& lpath = paths.ledgerLine();
+            painter.fillPath(lpath, black);
             painter.translate(0, step * staffSpacing);
             ledger += step;
         }
