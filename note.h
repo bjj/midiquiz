@@ -3,39 +3,60 @@
 
 #include <QtGlobal>
 
+class MidiNote ;
+
 class Note
 {
 public:
-    // From MIDI
-    enum { MiddleC = 60, MaxMidiNote = 127, Invalid = 128 };
     typedef enum { Left, Right, Either } Hand;
-    typedef enum { Scale, Natural, Sharp, Flat } Pitch;
+    typedef enum { Natural, Sharp, Flat } Pitch;
 
-    Note() :value(Invalid), pitch(Scale), hand(Either) { }
-    Note(int n) : value(n), hand(Either) { pitch = isSemitone() ? Sharp : Scale; }
-    Note(int n, Hand h) : value(n), hand(h) { pitch = isSemitone() ? Sharp : Scale; }
-    int octave() const { return value / 12 - 1; }
-    int note() const { return value % 12; }
-    int noteIdx() const {
-        static const int indexes[] = { 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6 };
-        return indexes[note()];
-    }
-    bool isSemitone() const {
-        static const bool semis[] = { 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0 };
-        return semis[note()];
-    }
-    float staffOffset() const { return 0.5 * ((octave() - 4) * 7 + noteIdx()); }
+    Note() :m_note('X'), m_octave(0), m_pitch(Natural), m_hand(Either) { }
+    Note(char n, int o) :m_note(n), m_octave(o), m_pitch(Natural), m_hand(Either) { }
+    Note(char n, int o, Pitch p) :m_note(n), m_octave(o), m_pitch(p), m_hand(Either) { }
+    Note(char n, int o, Pitch p, Hand h) :m_note(n), m_octave(o), m_pitch(p), m_hand(h) { }
+    Note(const MidiNote& mn);
+
+    int octave() const { return m_octave; }
+    char note() const { return m_note; }
+
+    float staffOffset() const { return 0.5 * ((octave() - 4) * 7 + note() - 'C'); }
     Hand pickHand() const {
-            if (hand != Either) return hand;
-            else return value >= 60 ? Right : Left;
+            if (m_hand != Either) return m_hand;
+            else return m_octave >= 4 ? Right : Left;
         }
-    bool valid() const { return value != Invalid; }
+    bool valid() const { return m_note >= 'A' && m_note <= 'G'; }
     static Note random(int octaves = 7);
 
 private:
-    unsigned int value;
-    Hand hand;
-    Pitch pitch;
+    char m_note;
+    int m_octave;
+    Pitch m_pitch;
+    Hand m_hand;
 };
+
+class MidiNote
+{
+public:
+    enum { MiddleC = 60, MaxNote = 127, InvalidNote = 128 };
+
+    MidiNote() :value(InvalidNote) { }
+    MidiNote(int n) : value(n) { }
+
+    int octave() const { return value / 12 - 1; }
+    char note() const {
+        static const int notes[] = { 'C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B' };
+        return notes[value % 12];
+    }
+    Note::Pitch pitch() const {
+        static const int sharps[] = { 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0 };
+        return sharps[value % 12] ? Note::Sharp : Note::Natural;
+    }
+
+private:
+    unsigned int value;
+};
+
+inline Note::Note(const MidiNote& mn) :m_note(mn.note()), m_octave(mn.octave()), m_pitch(mn.pitch()), m_hand(Either) { }
 
 #endif // NOTE_H
