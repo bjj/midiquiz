@@ -82,6 +82,7 @@ MidiCommDescriptionList MidiCommIn::GetDeviceList()
 MidiCommIn::MidiCommIn(unsigned int device_id)
 {
    m_description = GetDeviceList()[device_id];
+   m_callback = NULL;
 
    InitializeCriticalSection(&m_buffer_mutex);
 
@@ -95,6 +96,7 @@ MidiCommIn::MidiCommIn(unsigned int device_id)
 
 MidiCommIn::~MidiCommIn()
 {
+    if (m_callback) delete m_callback;
    midi_check(midiInStop(m_input_device));
    midi_check(midiInReset(m_input_device));
    midi_check(midiInClose(m_input_device));
@@ -102,9 +104,16 @@ MidiCommIn::~MidiCommIn()
    DeleteCriticalSection(&m_buffer_mutex);
 }
 
+void MidiCommIn::SetReadyCallback(MidiCommCallbackBase *cb)
+{
+    if (m_callback) delete m_callback;
+    m_callback = cb;
+}
+
 // This is only called by the callback function.  The reason this
 // is public (and the callback isn't a static member) is to keep the
 // HMIDIIN definition out of this classes header.
+
 void MidiCommIn::InputCallback(unsigned int msg, unsigned long p1, unsigned long)
 {
    try
@@ -121,6 +130,8 @@ void MidiCommIn::InputCallback(unsigned int msg, unsigned long p1, unsigned long
             EnterCriticalSection(&m_buffer_mutex);
             m_event_buffer.push(ev);
             LeaveCriticalSection(&m_buffer_mutex);
+            if (m_callback)
+                m_callback->invoke();
          }
          break;
 
@@ -158,6 +169,8 @@ void MidiCommIn::InputCallback(unsigned int msg, unsigned long p1, unsigned long
                EnterCriticalSection(&m_buffer_mutex);
                m_event_buffer.push(ev);
                LeaveCriticalSection(&m_buffer_mutex);
+               if (m_callback)
+                   m_callback->invoke();
                break;
             }
             throw MidiError(MidiError_InvalidInputErrorBehavior);
@@ -431,6 +444,8 @@ void MidiCommIn::InputCallback(unsigned int status, unsigned long byte1, unsigne
    pthread_mutex_lock(&m_mutex);
    m_event_buffer.push(ev);
    pthread_mutex_unlock(&m_mutex);
+   if (m_callback)
+       m_callback->invoke();
 }
 
 void MidiCommIn::Reset()

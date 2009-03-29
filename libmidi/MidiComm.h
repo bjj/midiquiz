@@ -31,6 +31,26 @@ struct MidiCommDescription
 typedef std::vector<MidiCommDescription> MidiCommDescriptionList;
 typedef std::queue<MidiEvent> MidiEventQueue;
 
+// A callback class to allow read-ready notifications.  This abstract
+// class hides the templateness from the caller-class.
+class MidiCommCallbackBase
+{
+public:
+    virtual void invoke(void) = 0;
+};
+
+template <typename T>
+class MidiCommCallback : public MidiCommCallbackBase
+{
+public:
+    typedef void (T::*Func)(void);
+    MidiCommCallback(T *obj, Func f) :m_obj(obj), m_func(f) { }
+    void invoke(void) { m_obj->*m_func(); }
+private:
+    T *m_obj;
+    Func m_func;
+};
+
 // Once you create a MidiCommIn object, MIDI events are read continuously
 // in a separate thread and stored in a buffer.  Use the Read() function
 // to grab one event at a time from the buffer.
@@ -44,6 +64,10 @@ public:
    ~MidiCommIn();
 
    MidiCommDescription GetDeviceDescription() const { return m_description; }
+
+   // Sets a function to call when input appears.  May be called from a
+   // "foreign" thread
+   void SetReadyCallback(MidiCommCallbackBase *cb);
 
    // Returns the next buffered input event.  Use KeepReading() (usually in
    // a while loop) to see if you should call this function.  If called when
@@ -69,6 +93,8 @@ private:
    MidiCommDescription m_description;
 
    MidiEventQueue m_event_buffer;
+
+   MidiCommCallbackBase *m_callback;
 
 #ifdef WIN32
    HMIDIIN m_input_device;
