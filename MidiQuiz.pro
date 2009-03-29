@@ -25,8 +25,9 @@ HEADERS += mainwindow.h \
     libmidi/Midi.h \
     libmidi/SynthVolume.h \
     libmidi/os.h
-OTHER_FILES += libmidi/license.txt
-win32 {
+OTHER_FILES += libmidi/license.txt \
+    .gitignore
+win32 { 
     DEFINES += WIN32
     LIBS += -lwinmm
 }
