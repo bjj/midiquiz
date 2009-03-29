@@ -1,12 +1,30 @@
 #include "mainwindow.h"
-#include "libmidi/MidiComm.h"
-using Synthesia::MidiCommIn;
+
 using Synthesia::MidiCommDescription;
 using Synthesia::MidiCommDescriptionList;
+
+void
+MainWindow::midiMenuTriggered(QAction *action)
+{
+    std::wstring name = action->text().toStdWString();
+
+    MidiCommDescriptionList midis = MidiCommIn::GetDeviceList();
+    MidiCommDescriptionList::const_iterator it = midis.begin();
+    for (; it != midis.end(); ++it) {
+        if (it->name == name) {
+            if (midiIn) {
+                delete midiIn;
+                midiIn = NULL;
+            }
+            midiIn = new MidiCommIn(it->id);
+        }
+    }
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    midiIn = NULL;
     MidiCommDescriptionList midis = MidiCommIn::GetDeviceList();
     QMenu *midimenu = menuBar()->addMenu("Midi In");
     MidiCommDescriptionList::const_iterator it = midis.begin();
@@ -17,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     } else {
         midimenu->addAction("None Found")->setDisabled(true);
     }
+    connect(midimenu, SIGNAL(triggered(QAction*)),
+            this, SLOT(midiMenuTriggered(QAction*)));
  
     scoreArea = new ScoreArea;
 
@@ -29,4 +49,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    if (midiIn)
+        delete midiIn;
 }

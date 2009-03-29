@@ -6,6 +6,8 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include "scorearea.h"
+#include "libmidi/MidiComm.h"
+using Synthesia::MidiCommIn;
 
 class MainWindow : public QMainWindow
 {
@@ -15,8 +17,12 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void midiMenuTriggered(QAction *action);
+
 private:
     ScoreArea *scoreArea;
+    MidiCommIn *midiIn;
 };
 
 #endif // MAINWINDOW_H
