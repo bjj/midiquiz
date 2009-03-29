@@ -336,6 +336,8 @@ ScoreArea::ScoreArea()
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
     setFocusPolicy(Qt::ClickFocus);
+    match = false;
+    blackNote = Note::random(4);
 }
 
 QSize ScoreArea::minimumSizeHint() const
@@ -480,7 +482,7 @@ void ScoreArea::paintEvent(QPaintEvent * /* event */)
     }
 
     if (shownNote.valid()) {
-        QBrush blue(Qt::blue, Qt::SolidPattern);
+        QBrush blue(match ? Qt::blue : Qt::red, Qt::SolidPattern);
 
         painter.save();
         painter.translate(200, 0);
@@ -494,4 +496,18 @@ void ScoreArea::keyPressEvent(QKeyEvent * /* event */)
 {
     blackNote = Note::random(4);
     update();
+}
+
+void ScoreArea::showNote(const Note &n)
+{
+    shownNote = n.equivalentPitch(blackNote.pitch());
+    update();
+    if (shownNote.octave() == blackNote.octave() &&
+        shownNote.note() == blackNote.note() &&
+        shownNote.pitch() == blackNote.pitch()) {
+        match = true;
+        blackNote = Note::random(4);
+    } else {
+        match = false;
+    }
 }

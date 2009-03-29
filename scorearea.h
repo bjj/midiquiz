@@ -33,7 +33,7 @@ public:
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
 
-    void showNote(const Note &n) { shownNote = n.equivalentPitch(blackNote.pitch()); update(); }
+    void showNote(const Note &n);
 
     enum {
         staffWeight = 2,
@@ -43,6 +43,7 @@ public:
 
 protected:
     Note blackNote, shownNote;
+    bool match;
 
     void paintEvent(QPaintEvent *event);
     void paintLedgerLines(QPainter& painter, const Note& note);
