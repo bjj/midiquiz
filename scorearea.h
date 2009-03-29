@@ -42,8 +42,8 @@ public:
 protected:
     Note blackNote;
 
-
     void paintEvent(QPaintEvent *event);
+    void paintLedgerLines(QPainter& painter, const Note& note);
     void keyPressEvent(QKeyEvent *event);
 
 };
