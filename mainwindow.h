@@ -19,8 +19,14 @@ public:
 
 public slots:
     void midiMenuTriggered(QAction *action);
+    void midiInputUpdate(void);
+
+signals:
+    void midiInputReady(void);
 
 private:
+    void tempMidi(void);
+
     ScoreArea *scoreArea;
     MidiCommIn *midiIn;
 };

@@ -1,7 +1,25 @@
 #include "mainwindow.h"
+#include <QApplication>
 
 using Synthesia::MidiCommDescription;
 using Synthesia::MidiCommDescriptionList;
+using Synthesia::MidiEvent;
+
+void MainWindow::tempMidi()
+{
+    emit midiInputReady();
+}
+
+void MainWindow::midiInputUpdate()
+{
+    if (!midiIn)
+        return;
+    while (midiIn->KeepReading()) {
+        MidiEvent ev = midiIn->Read();
+        if (ev.Type() == Synthesia::MidiEventType_NoteOn)
+            scoreArea->showNote(Note(MidiNote(ev.NoteNumber())));
+    }
+}
 
 void
 MainWindow::midiMenuTriggered(QAction *action)
@@ -17,6 +35,9 @@ MainWindow::midiMenuTriggered(QAction *action)
                 midiIn = NULL;
             }
             midiIn = new MidiCommIn(it->id);
+            Synthesia::MidiCommCallback<MainWindow> *cb =
+                    new Synthesia::MidiCommCallback<MainWindow> (this, &MainWindow::tempMidi);
+            midiIn->SetReadyCallback(cb);
         }
     }
 }
@@ -24,6 +45,9 @@ MainWindow::midiMenuTriggered(QAction *action)
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    connect(this, SIGNAL(midiInputReady()),
+            this, SLOT(midiInputUpdate()));
+
     midiIn = NULL;
     MidiCommDescriptionList midis = MidiCommIn::GetDeviceList();
     QMenu *midimenu = menuBar()->addMenu("Midi In");
