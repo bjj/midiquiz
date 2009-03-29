@@ -21,7 +21,8 @@ public:
     char note() const { return m_note; }
     Pitch pitch() const { return m_pitch; }
 
-    float staffOffset() const { return 0.5 * ((octave() - 4) * 7 + note() - 'C'); }
+    int noteIndex() const { int i = note() - 'C'; if (i < 0) i += 7; return i; }
+    float staffOffset() const { return 0.5 * ((octave() - 4) * 7 + noteIndex()); }
     Hand pickHand() const {
             if (m_hand != Either) return m_hand;
             else return m_octave >= 4 ? Right : Left;
@@ -52,7 +53,7 @@ public:
     }
     Note::Pitch pitch() const {
         static const int sharps[] = { 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0 };
-        return sharps[value % 12] ? Note::Sharp : Note::Natural;
+        return sharps[value % 12] ? Note::Sharp : Note::None;
     }
 
 private:
