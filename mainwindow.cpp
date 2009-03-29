@@ -51,16 +51,24 @@ MainWindow::MainWindow(QWidget *parent)
     midiIn = NULL;
     MidiCommDescriptionList midis = MidiCommIn::GetDeviceList();
     QMenu *midimenu = menuBar()->addMenu("Midi In");
+    connect(midimenu, SIGNAL(triggered(QAction*)),
+            this, SLOT(midiMenuTriggered(QAction*)));
     MidiCommDescriptionList::const_iterator it = midis.begin();
     if (it != midis.end()) {
+        QAction *first = NULL;
+        QActionGroup *radio = new QActionGroup(this);
+        radio->setExclusive(true);
         for (; it != midis.end(); ++it) {
-            midimenu->addAction(QString::fromStdWString(it->name));
+            QAction *act = midimenu->addAction(QString::fromStdWString(it->name));
+            radio->addAction(act);
+            act->setCheckable(true);
+            if (first == NULL)
+                first = act;
         }
+        first->trigger();
     } else {
         midimenu->addAction("None Found")->setDisabled(true);
     }
-    connect(midimenu, SIGNAL(triggered(QAction*)),
-            this, SLOT(midiMenuTriggered(QAction*)));
  
     scoreArea = new ScoreArea;
 
