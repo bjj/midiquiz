@@ -9,16 +9,17 @@ class Note
 {
 public:
     typedef enum { Left, Right, Either } Hand;
-    typedef enum { Natural, Sharp, Flat } Pitch;
+    typedef enum { None, Natural, Sharp, Flat } Pitch;
 
-    Note() :m_note('X'), m_octave(0), m_pitch(Natural), m_hand(Either) { }
-    Note(char n, int o) :m_note(n), m_octave(o), m_pitch(Natural), m_hand(Either) { }
+    Note() :m_note('X'), m_octave(0), m_pitch(None), m_hand(Either) { }
+    Note(char n, int o) :m_note(n), m_octave(o), m_pitch(None), m_hand(Either) { }
     Note(char n, int o, Pitch p) :m_note(n), m_octave(o), m_pitch(p), m_hand(Either) { }
     Note(char n, int o, Pitch p, Hand h) :m_note(n), m_octave(o), m_pitch(p), m_hand(h) { }
     Note(const MidiNote& mn);
 
     int octave() const { return m_octave; }
     char note() const { return m_note; }
+    Pitch pitch() const { return m_pitch; }
 
     float staffOffset() const { return 0.5 * ((octave() - 4) * 7 + note() - 'C'); }
     Hand pickHand() const {
@@ -27,6 +28,7 @@ public:
         }
     bool valid() const { return m_note >= 'A' && m_note <= 'G'; }
     static Note random(int octaves = 7);
+    Note canonical();
 
 private:
     char m_note;
