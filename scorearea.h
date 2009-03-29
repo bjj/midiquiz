@@ -33,7 +33,7 @@ public:
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
 
-    void showNote(const Note &n) { shownNote = n; update(); }
+    void showNote(const Note &n) { shownNote = n.equivalentPitch(blackNote.pitch()); update(); }
 
     enum {
         staffWeight = 2,

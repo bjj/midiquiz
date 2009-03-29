@@ -29,7 +29,8 @@ public:
         }
     bool valid() const { return m_note >= 'A' && m_note <= 'G'; }
     static Note random(int octaves = 7);
-    Note canonical();
+    Note canonical() const;
+    Note equivalentPitch(Pitch p) const;
 
 private:
     char m_note;
