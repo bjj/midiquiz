@@ -400,6 +400,45 @@ void ScoreArea::paintLedgerLines(QPainter& painter, const Note& note)
     painter.restore();
 }
 
+// Draw the given Note at the painter's
+// current x coordinate
+void ScoreArea::paintNote(QPainter& painter, const Note& note, const QBrush& brush)
+{
+    if (!note.valid())
+        return;
+
+    qreal y = note.staffOffset();
+    Note::Hand h = note.pickHand();
+    if (h == Note::Left)
+        y = -y + (staffGap - 1);
+    else
+        y = -y - (staffGap - 1);
+
+    painter.save();
+    painter.translate(0, y * staffSpacing);
+
+    Note::Pitch p = note.pitch();
+    if (p != Note::None) {
+        painter.save();
+        painter.translate(-14, 0);
+        switch (p) {
+        case Note::Sharp:
+            painter.fillPath(paths.sharp(), brush);
+            break;
+        case Note::Flat:
+            painter.fillPath(paths.flat(), brush);
+            break;
+        case Note::Natural:
+            painter.fillPath(paths.natural(), brush);
+            break;
+        }
+        painter.restore();
+    }
+
+    painter.fillPath(paths.quarterNote(), brush);
+    painter.restore();
+}
+
 void ScoreArea::paintEvent(QPaintEvent * /* event */)
 {
     QPainter painter(this);
@@ -432,39 +471,21 @@ void ScoreArea::paintEvent(QPaintEvent * /* event */)
     painter.fillPath(paths.bassClef(), black);
     painter.restore();
 
-    const Note& note = blackNote;
-    if (note.valid()) {
-        qreal y = note.staffOffset();
-        Note::Hand h = note.pickHand();
-        if (h == Note::Left)
-            y = -y + (staffGap - 1);
-        else
-            y = -y - (staffGap - 1);
-
+    if (blackNote.valid()) {
         painter.save();
         painter.translate(100, 0);
-        paintLedgerLines(painter, note);
-        painter.translate(0, y * staffSpacing);
+        paintLedgerLines(painter, blackNote);
+        paintNote(painter, blackNote, black);
+        painter.restore();
+    }
 
-        Note::Pitch p = note.pitch();
-        if (p != Note::None) {
-            painter.save();
-            painter.translate(-14, 0);
-            switch (p) {
-            case Note::Sharp:
-                painter.fillPath(paths.sharp(), black);
-                break;
-            case Note::Flat:
-                painter.fillPath(paths.flat(), black);
-                break;
-            case Note::Natural:
-                painter.fillPath(paths.natural(), black);
-                break;
-            }
-            painter.restore();
-        }
+    if (shownNote.valid()) {
+        QBrush blue(Qt::blue, Qt::SolidPattern);
 
-        painter.fillPath(paths.quarterNote(), black);
+        painter.save();
+        painter.translate(200, 0);
+        paintLedgerLines(painter, shownNote);
+        paintNote(painter, shownNote, blue);
         painter.restore();
     }
 }

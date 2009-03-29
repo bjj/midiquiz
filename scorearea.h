@@ -33,6 +33,8 @@ public:
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
 
+    void showNote(const Note &n) { shownNote = n; update(); }
+
     enum {
         staffWeight = 2,
         staffSpacing = 10,
@@ -40,10 +42,11 @@ public:
     };
 
 protected:
-    Note blackNote;
+    Note blackNote, shownNote;
 
     void paintEvent(QPaintEvent *event);
     void paintLedgerLines(QPainter& painter, const Note& note);
+    void paintNote(QPainter& painter, const Note& note, const QBrush& brush);
     void keyPressEvent(QKeyEvent *event);
 
 };
