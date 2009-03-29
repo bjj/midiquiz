@@ -6,7 +6,27 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     scorearea.cpp \
-    note.cpp
+    note.cpp \
+    libmidi/SynthVolume.cpp \
+    libmidi/MidiUtil.cpp \
+    libmidi/MidiTrack.cpp \
+    libmidi/MidiEvent.cpp \
+    libmidi/MidiComm.cpp \
+    libmidi/Midi.cpp
 HEADERS += mainwindow.h \
     scorearea.h \
-    note.h
+    note.h \
+    libmidi/Note.h \
+    libmidi/MidiUtil.h \
+    libmidi/MidiTypes.h \
+    libmidi/MidiTrack.h \
+    libmidi/MidiEvent.h \
+    libmidi/MidiComm.h \
+    libmidi/Midi.h \
+    libmidi/SynthVolume.h \
+    libmidi/os.h
+OTHER_FILES += libmidi/license.txt
+win32 {
+    DEFINES += WIN32
+    LIBS += -lwinmm
+}
