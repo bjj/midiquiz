@@ -15,6 +15,9 @@ using namespace std;
 //#include "../CompatibleSystem.h"
 #include "string_util.h"
 
+namespace Synthesia
+{
+
 #ifdef WIN32
 
 void midi_check(MMRESULT ret)
@@ -658,8 +661,6 @@ void MidiCommOut::Reset()
    Acquire(id);
 }
 
-
-
-
-
 #endif
+
+}

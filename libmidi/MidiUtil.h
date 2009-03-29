@@ -10,6 +10,9 @@
 #include <iostream>
 #include <string>
 
+namespace Synthesia
+{
+
 // Cross-platform Endian conversion functions
 //
 // MIDI is big endian.  Some platforms aren't
@@ -127,5 +130,5 @@ enum MidiMetaEventType
 // (If this isn't a meta event, returns an empty string)
 std::wstring GetMidiMetaEventTypeDescription(MidiMetaEventType type);
 
-
+}
 #endif

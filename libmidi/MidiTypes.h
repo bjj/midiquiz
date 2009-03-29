@@ -5,6 +5,11 @@
 #ifndef __MIDI_TYPES_H
 #define __MIDI_TYPES_H
 
+namespace Synthesia
+{
+
 typedef long long microseconds_t;
+
+}
 
 #endif

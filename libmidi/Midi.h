@@ -12,7 +12,10 @@
 #include "MidiTrack.h"
 #include "MidiTypes.h"
 
-class MidiError;
+namespace Synthesia
+{
+
+    class MidiError;
 class MidiEvent;
 
 typedef std::vector<MidiTrack> MidiTrackList;
@@ -90,5 +93,7 @@ private:
    double m_playback_speed;
    MidiTrackList m_tracks;
 };
+
+}
 
 #endif

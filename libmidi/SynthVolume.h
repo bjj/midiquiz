@@ -10,6 +10,9 @@
 #ifdef WIN32
 #include <vector>
 
+namespace Synthesia
+{
+
 // Windows Media Player (starting in version 11) has started changing
 // the MIDI synth volume to 0 after playing a MIDI file and exiting.
 // Seeing as how that's a common file-preview path just before starting
@@ -43,7 +46,12 @@ private:
    std::vector<SynthVolumeState> m_states;
 };
 
+}
+
 #else
+
+namespace Synthesia
+{
 
 // Don't do anything on the Mac side
 
@@ -53,6 +61,7 @@ public:
    ReasonableSynthVolume() { }
 };
 
+}
 #endif
 
 

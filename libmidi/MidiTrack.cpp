@@ -13,6 +13,9 @@
 
 using namespace std;
 
+namespace Synthesia
+{
+
 MidiTrack MidiTrack::ReadFromStream(std::istream &stream)
 {
    // Verify the track header
@@ -250,4 +253,6 @@ MidiEventList MidiTrack::Update(microseconds_t delta_microseconds)
    }
 
    return evs;
+}
+
 }

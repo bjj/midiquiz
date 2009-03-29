@@ -10,7 +10,10 @@
 
 using namespace std;
 
-unsigned long BigToSystem32(unsigned long x) 
+namespace Synthesia
+{
+
+unsigned long BigToSystem32(unsigned long x)
 {
 #ifdef WIN32
    return ((((x) & 0x00ff0000) >> 8 )  |
@@ -284,3 +287,5 @@ std::wstring const InstrumentNames[InstrumentCount] = {
    L"Percussion", // for Tracks that use Channel 10 or 16
    L"Various"     // for Tracks that use more than one
 };
+
+}

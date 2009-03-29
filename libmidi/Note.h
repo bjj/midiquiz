@@ -8,6 +8,9 @@
 #include <set>
 #include "MidiTypes.h"
 
+namespace Synthesia
+{
+
 // Range of all 128 MIDI notes possible
 typedef unsigned int NoteId;
 
@@ -65,4 +68,5 @@ typedef GenericNote<microseconds_t> TranslatedNote;
 typedef std::set<Note, Note> NoteSet;
 typedef std::set<TranslatedNote, TranslatedNote> TranslatedNoteSet;
 
+}
 #endif

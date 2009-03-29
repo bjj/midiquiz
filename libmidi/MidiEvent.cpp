@@ -8,6 +8,9 @@
 
 using namespace std;
 
+namespace Synthesia
+{
+
 MidiEvent MidiEvent::ReadFromStream(istream &stream, unsigned char last_status, bool contains_delta_pulses)
 {
    MidiEvent ev;
@@ -321,4 +324,6 @@ unsigned long MidiEvent::GetTempoInUsPerQn() const
    }
 
    return m_tempo_uspqn;
+}
+
 }

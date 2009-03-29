@@ -2,7 +2,11 @@
 // Copyright (c)2007 Nicholas Piegdon
 // See license.txt for license information
 
+
 #include "SynthVolume.h"
+
+namespace Synthesia
+{
 
 // The following Mixer routines are based off Chen Su's Audio Mixer Functions Demo
 // which can be found at: http://www.codeproject.com/audio/admixer.asp
@@ -129,4 +133,4 @@ ReasonableSynthVolume::~ReasonableSynthVolume()
    }
 }
 
-
+}

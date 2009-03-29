@@ -19,6 +19,9 @@
 
 #include "MidiEvent.h"
 
+namespace Synthesia
+{
+
 struct MidiCommDescription
 {
    unsigned int id;
@@ -113,5 +116,5 @@ private:
 #endif
 
 };
-
+}
 #endif

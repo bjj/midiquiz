@@ -12,6 +12,9 @@
 #include "MidiEvent.h"
 #include "MidiUtil.h"
 
+namespace Synthesia
+{
+
 class MidiEvent;
 
 typedef std::vector<MidiEvent> MidiEventList;
@@ -73,5 +76,7 @@ private:
 
    unsigned int m_notes_remaining;
 };
+
+}
 
 #endif

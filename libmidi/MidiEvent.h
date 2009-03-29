@@ -14,6 +14,9 @@
 #include "Note.h"
 #include "MidiUtil.h"
 
+namespace Synthesia
+{
+
 struct MidiEventSimple
 {
    MidiEventSimple() : status(0), byte1(0), byte2(0) { }
@@ -109,5 +112,6 @@ private:
    std::string m_text;
 };
 
+}
 
 #endif __MIDI_EVENT_H

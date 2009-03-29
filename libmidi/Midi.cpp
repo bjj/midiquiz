@@ -12,6 +12,9 @@
 
 using namespace std;
 
+namespace Synthesia
+{
+
 Midi Midi::ReadFromFile(const wstring &filename)
 {
 #if defined WIN32
@@ -475,4 +478,6 @@ bool Midi::IsSongOver() const
 {
    if (!m_initialized) return true;
    return (m_microsecond_song_position - m_microsecond_dead_start_air) >= GetSongLengthInMicroseconds() + m_microsecond_lead_out;
+}
+
 }
