@@ -3,6 +3,8 @@
 
 #include <QtGui/QMainWindow>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QMenu>
+#include <QtGui/QMenuBar>
 #include "scorearea.h"
 
 class MainWindow : public QMainWindow
