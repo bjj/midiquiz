@@ -45,7 +45,7 @@ class MidiCommCallback : public MidiCommCallbackBase
 public:
     typedef void (T::*Func)(void);
     MidiCommCallback(T *obj, Func f) :m_obj(obj), m_func(f) { }
-    void invoke(void) { m_obj->*m_func(); }
+    void invoke(void) { (m_obj->*m_func)(); }
 private:
     T *m_obj;
     Func m_func;
