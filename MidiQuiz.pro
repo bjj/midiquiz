@@ -27,7 +27,8 @@ HEADERS += mainwindow.h \
     libmidi/os.h
 OTHER_FILES += libmidi/license.txt \
     .gitignore
-win32 { 
+win32 {
+    CONFIG += embed_manifest_exe
     DEFINES += WIN32
     LIBS += -lwinmm
 }
