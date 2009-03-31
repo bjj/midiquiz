@@ -32,3 +32,8 @@ win32 {
     DEFINES += WIN32
     LIBS += -lwinmm
 }
+macx {
+    LIBS += -framework CoreMidi
+    LIBS += -framework CoreAudio
+    LIBS += -framework AudioUnit
+}
