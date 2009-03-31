@@ -4,3 +4,8 @@ Makefile*
 *.pro.user
 qtc-gdbmacros/
 vc*.pdb
+Info.plist
+MidiQuiz.xcodeproj/
+MidiQuiz.app/
+build/
+moc_*
