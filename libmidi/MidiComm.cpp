@@ -104,12 +104,6 @@ MidiCommIn::~MidiCommIn()
    DeleteCriticalSection(&m_buffer_mutex);
 }
 
-void MidiCommIn::SetReadyCallback(MidiCommCallbackBase *cb)
-{
-    if (m_callback) delete m_callback;
-    m_callback = cb;
-}
-
 // This is only called by the callback function.  The reason this
 // is public (and the callback isn't a static member) is to keep the
 // HMIDIIN definition out of this classes header.
@@ -677,5 +671,11 @@ void MidiCommOut::Reset()
 }
 
 #endif
+
+void MidiCommIn::SetReadyCallback(MidiCommCallbackBase *cb)
+{
+    if (m_callback) delete m_callback;
+    m_callback = cb;
+}
 
 }
