@@ -14,6 +14,7 @@
 
 #ifndef WIN32
 #include <AudioUnit/AudioUnit.h>
+#include <AudioUnit/AUNTComponent.h>
 #include <CoreMIDI/CoreMIDI.h>
 #endif
 
