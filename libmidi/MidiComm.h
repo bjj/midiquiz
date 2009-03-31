@@ -36,6 +36,7 @@ typedef std::queue<MidiEvent> MidiEventQueue;
 class MidiCommCallbackBase
 {
 public:
+    virtual ~MidiCommCallbackBase() { }
     virtual void invoke(void) = 0;
 };
 
