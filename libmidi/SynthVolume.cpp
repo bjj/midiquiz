@@ -5,6 +5,8 @@
 
 #include "SynthVolume.h"
 
+#ifdef WIN32
+
 namespace Synthesia
 {
 
@@ -134,3 +136,5 @@ ReasonableSynthVolume::~ReasonableSynthVolume()
 }
 
 }
+
+#endif /* WIN32 */
